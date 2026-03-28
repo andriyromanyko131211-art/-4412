@@ -35,9 +35,9 @@ class Enemy:
             for i in range(item_counter):
                 class_item = random.randint(0,1)
                 if class_item == 0:
-                    dropped_item = random.choice(list_of_weapon)
+                    dropped_item = random.choice(weapon_items)
                 else:
-                    dropped_item = random.choice(list_of_armor)
+                    dropped_item = random.choice(weapon_items)
                 print(f"Ваша здобич: {dropped_item.name}"
                       f"\t Бонусна шкода:{dropped_item.bonus_damage}\n"
                       f"\t Бонусна броня:{dropped_item.bonus_armor}\n"
