@@ -58,6 +58,7 @@ class Player:
         self.player_class = player_class
         self.bonus_armor = 0
         self.weapon = None
+        self.accessorie = None
         self.armor = None
         self.maxhp = maxhp
         self.hp = maxhp
@@ -114,6 +115,12 @@ class Player:
         else:
             self.hp += heal
             print(f"Ви відновили {heal} ХП! тепер у вас {self.hp} з {self.max_hp}")
+
+    def equip_accessorie(self, item):
+        self.armor = item.bonus_armor
+        self.maxhp = item.bonus_hp
+        self.damage = item.bonus_damage
+        self.accessorie = item
 
 class Item:
     def __init__(self, name, item_class, bonus_damage, bonus_hp, bonus_armor):
@@ -216,6 +223,35 @@ weapon_items = [
     Item("Подвійні клинки", "Маг", 32, 0, 0),
     Item("Срібна рапіра", "Маг", 28, 0, 0)
 ]
+accessories_items = [
+    # --- Шкода (Damage) ---
+    Item("Точильний камінь", "Universal", 5, 0, 0),
+    Item("Кільце Сили", "Universal", 8, 0, 0),
+    Item("Потерта перев'язь", "Universal", 10, 0, 0),
+    Item("Есенція люті", "Universal", 12, 0, 0),
+    Item("Наручі мисливця", "Universal", 15, 0, 0),
+
+    # --- Здоров'я (HP) ---
+    Item("Медальйон витривалості", "Universal", 0, 20, 0),
+    Item("Пояс мандрівника", "Universal", 0, 35, 0),
+    Item("Амулет життя", "Universal", 0, 50, 0),
+    Item("Окріпша жила", "Universal", 0, 65, 0),
+    Item("Кристал стійкості", "Universal", 0, 80, 0),
+
+    # --- Броня (Armor) ---
+    Item("Залізний жетон", "Universal", 0, 0, 5),
+    Item("Шкіряні наплічники", "Universal", 0, 0, 10),
+    Item("Дубовий щиток", "Universal", 0, 0, 15),
+    Item("Руна захисту", "Universal", 0, 0, 20),
+    Item("Пластинчасті рукавиці", "Universal", 0, 0, 25),
+
+    # --- Гібридні (Mixed) ---
+    Item("Знак ветерана", "Universal", 5, 20, 0),
+    Item("Оберіг лісу", "Universal", 0, 15, 10),
+    Item("Бойовий трофей", "Universal", 7, 0, 7),
+    Item("Спадщина предків", "Universal", 10, 10, 10),
+    Item("Аметистова підвіска", "Universal", 0, 25, 5)
+]
 
 def fight_with_enemy():
     enemy = random.choice(list_of_enemy)
@@ -239,6 +275,39 @@ def fight_with_enemy():
             break
         time.sleep(2)
 
+def found_a_tresure():
+    my_chance = random.randint(0,100)
+
+    user_choice = input("Воу! Ви знайшли скарб! Хочете переглянути що там! Ви можете натрапити на міміка!\n"
+                        "Відкрити (1) або втекти(2)")
+
+    if user_choice ==2:
+        print("Ви втекли від скарбу((")
+        return
+    else:
+        if my_chance < 20:
+            tresure = random.choice(accessories_items)
+            print(f"Ваша здобич: {tresure.name}"
+                  f"\t Бонусна шкода:{tresure.bonus_damage}\n"
+                  f"\t Бонусна броня:{tresure.bonus_armor}\n"
+                  f"\t Бонусне ХП:{tresure.bonus_hp}\n"
+                  f"\t Екіпіювати(1) чи викинути(будь яка кнопка)?")
+            user_answer = input()
+            if user_answer == "1":
+                my_hero.equip_accessorie(tresure)
+            else:
+                pass
+        elif my_chance <= 40:
+            pass
+        elif my_chance <= 60:
+            pass
+        elif my_chance <= 80:
+            pass
+        else:
+            pass
+
+
+
 print("Вітаємо вас в світі Неверленд! \nДавайте створимо для вас ваш аватар!")
 player_name = input("Введіть ім'я вашого аватара:")
 print(f"Чудовий вибір, {player_name}")
@@ -260,12 +329,12 @@ while my_hero is None:
     else:
         print("Будь ласка, зробіть правильний вибір")
 
+
 weapon = random.choice(weapon_items)
 my_hero.player_info()
 my_hero.equip_weapon(weapon)
 my_hero.player_info()
 input()
-
 
 
 
@@ -276,12 +345,10 @@ while my_hero.hp > 0:
     if situacttion == "Ворог":
         fight_with_enemy()
     elif situacttion == "Відпочинок":
-        print("Відпочинок")
-    elif situacttion == "Скарб":
         my_hero.healing(random.randint(20,80))
+    elif situacttion == "Скарб":
+        found_a_tresure()
     input("Для наступного кроку натисніть Ентер!")
-
-
 
 
 
