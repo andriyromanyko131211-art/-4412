@@ -1,23 +1,27 @@
 import random
 import time
 
+class Entity:
+    def __init__(self, name, hp, damage):
+        self.name = name
+        self.max_hp = hp
+        self.hp = hp
+        self.damage = damage
+        def take_damage(self, taken_damage):
+            self.hp -= taken_damage
+            if self.hp < 0:
+                self.hp = 0
+            print(f"{self.name} отримав {taken_damage} шкоди. Залишилось {self.hp} життя!")
+        def attack(self, target):
+            print(f"{self.name} атакував {target.name}...")
+            target.take_damage(self.damage)
 
-class Enemy:
+class Enemy(Entity):
     def __init__(self, name, hp, damage):
         self.name = name
         self.hp = hp
         self.damage = damage
-
-    def take_damage(self, taken_damage):
-        self.hp -= taken_damage
-        if self.hp < 0:
-            self.hp = 0
-        print(f"{self.name} отримав {taken_damage} шкоди. Залишилось {self.hp} життя!")
-
-    def attack(self, target):
-        print(f"{self.name} атакував {target.name}...")
-        target.take_damage(self.damage)
-
+        super().__init__(name,hp,damage)
     def drop_item(self):
         chance = random.randint(0,100)
         item_counter = 0
@@ -51,7 +55,6 @@ class Enemy:
 
         else:
             print("На жаль, вам нічого не випало! Удачи в боях")
-
 class Player:
     def __init__(self, name, player_class, maxhp, damage):
         self.name = name
@@ -64,24 +67,6 @@ class Player:
         self.hp = maxhp
         self.damage = damage
 
-    def take_damage(self, taken_damage):
-        actual_damage = taken_damage - self.bonus_armor
-        if actual_damage < 1:
-            actual_damage = 1
-        self.hp -= actual_damage
-        if self.hp < 0:
-            self.hp = 0
-        print(f"{self.name} отримав {actual_damage} шкоди (захист поглинув {self.bonus_armor}). Залишилось {self.hp} життя!")
-
-    def take_damage(self, taken_damage):
-        self.hp -= taken_damage
-        if self.hp < 0:
-            self.hp = 0
-        print(f"{self.name} отримав {taken_damage} шкоди. Залишилось {self.hp} життя!")
-
-    def attack(self, target):
-        print(f"{self.name} атакував {target.name}...")
-        target.take_damage(self.damage)
 
     def player_info(self):
         print(f"-----{self.name}-----"
@@ -121,7 +106,6 @@ class Player:
         self.maxhp = item.bonus_hp
         self.damage = item.bonus_damage
         self.accessorie = item
-
 class Item:
     def __init__(self, name, item_class, bonus_damage, bonus_hp, bonus_armor):
         self.name = name
@@ -132,8 +116,6 @@ class Item:
 
     def equip_armor(self, item):
         pass
-
-
 class Item:
     def __init__(self, name, item_class, bonus_damage, bonus_hp, bonus_armor):
         self.name = name
